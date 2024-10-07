@@ -19,7 +19,6 @@ function Turntable({ track, deckIndex, availableTracks = [], onTrackChange, disc
   const animationRef = useRef(null);
   const lastTimeRef = useRef(0);
   const dragStartAngleRef = useRef(0);
-  const [startAngle, setStartAngle] = useState(0);
 
   const discImages = {
     'disc_cover_1.jpg': discCover1,
@@ -234,89 +233,6 @@ function Turntable({ track, deckIndex, availableTracks = [], onTrackChange, disc
     };
   }, [isDragging]);
 
-  const handleTouchStart = (e) => {
-    const touch = e.touches[0];
-    setIsDragging(true);
-    setStartAngle(calculateAngle(touch.clientX, touch.clientY));
-  };
-
-  const handleTouchMove = (e) => {
-    if (isDragging && platterRef.current) {
-      const rect = platterRef.current.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const angle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
-      const deltaAngle = angle - dragStartAngleRef.current;
-      let newRotation = rotation + deltaAngle * (180 / Math.PI);
-      if (newRotation >= 360 || newRotation < 0) {
-        newRotation = newRotation % 360;
-        if (newRotation < 0) newRotation += 360;
-        setRotationWithoutAnimation(newRotation);
-      } else {
-        setRotation(newRotation);
-      }
-      dragStartAngleRef.current = angle;
-
-      // ここで音楽の再生位置を調整
-      if (audioRef.current) {
-        const rotationDelta = deltaAngle * (180 / Math.PI);
-        const timeDelta = rotationDelta / 30;
-        audioRef.current.currentTime = Math.max(0, timeAtStartDrug+ timeDelta);
-      }
-    }
-  };
-
-  const handleTouchEnd = () => {
-    setIsDragging(false);
-  };
-
-  const calculateAngle = (x, y) => {
-    const rect = platterRef.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    return Math.atan2(y - centerY, x - centerX);
-  };
-
-  const handleProgressTouchStart = (e) => {
-    const touch = e.touches[0];
-    updateProgressTimeFromTouch(touch);
-  };
-
-  const handleProgressTouchMove = (e) => {
-    const touch = e.touches[0];
-    updateProgressTimeFromTouch(touch);
-  };
-
-  const updateProgressTimeFromTouch = (touch) => {
-    const progressBar = document.querySelector('.progress-bar');
-    if (!progressBar) return;
-
-    const rect = progressBar.getBoundingClientRect();
-    const x = touch.clientX - rect.left;
-    const width = rect.width;
-    const percentage = Math.max(0, Math.min(1, x / width));
-    const newTime = percentage * duration;
-    setCurrentTime(newTime);
-    if (audioRef.current) {
-      audioRef.current.currentTime = newTime;
-    }
-  };
-
-  useEffect(() => {
-    const progressBar = document.querySelector('.progress-bar');
-    if (progressBar) {
-      progressBar.addEventListener('touchstart', handleProgressTouchStart);
-      progressBar.addEventListener('touchmove', handleProgressTouchMove);
-    }
-
-    return () => {
-      if (progressBar) {
-        progressBar.removeEventListener('touchstart', handleProgressTouchStart);
-        progressBar.removeEventListener('touchmove', handleProgressTouchMove);
-      }
-    };
-  }, [duration]); // durationを依存配列に追加
-
   return (
     <div className={`turntable deck-${deckIndex + 1}`}>
       <div className="deck-info">
@@ -347,9 +263,6 @@ function Turntable({ track, deckIndex, availableTracks = [], onTrackChange, disc
                 '--disc-image': `url(${discImages[discImage]})` // CSS変数を使用
               }}
               onMouseDown={handleMouseDown}
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
             >
               {track && (
                 <audio 
@@ -372,8 +285,6 @@ function Turntable({ track, deckIndex, availableTracks = [], onTrackChange, disc
                 value={currentTime}
                 onInput={handleTimeChange}
                 onChange={handleTimeChange}
-                onTouchStart={handleProgressTouchStart}
-                onTouchMove={handleProgressTouchMove}
                 className="progress-bar"
               />
             </div>
