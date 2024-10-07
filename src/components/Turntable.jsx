@@ -19,6 +19,7 @@ function Turntable({ track, deckIndex, availableTracks = [], onTrackChange, disc
   const animationRef = useRef(null);
   const lastTimeRef = useRef(0);
   const dragStartAngleRef = useRef(0);
+  const [startAngle, setStartAngle] = useState(0);
 
   const discImages = {
     'disc_cover_1.jpg': discCover1,
@@ -251,6 +252,13 @@ function Turntable({ track, deckIndex, availableTracks = [], onTrackChange, disc
 
   const handleTouchEnd = () => {
     setIsDragging(false);
+  };
+
+  const calculateAngle = (x, y) => {
+    const rect = platterRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    return Math.atan2(y - centerY, x - centerX);
   };
 
   return (
