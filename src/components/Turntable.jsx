@@ -19,6 +19,7 @@ function Turntable({ track, deckIndex, availableTracks = [], onTrackChange, disc
   const animationRef = useRef(null);
   const lastTimeRef = useRef(0);
   const dragStartAngleRef = useRef(0);
+  const [startAngle, setStartAngle] = useState(0);
 
   const discImages = {
     'disc_cover_1.jpg': discCover1,
@@ -233,6 +234,33 @@ function Turntable({ track, deckIndex, availableTracks = [], onTrackChange, disc
     };
   }, [isDragging]);
 
+  const handleTouchStart = (e) => {
+    const touch = e.touches[0];
+    setIsDragging(true);
+    setStartAngle(calculateAngle(touch.clientX, touch.clientY));
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const touch = e.touches[0];
+    const currentAngle = calculateAngle(touch.clientX, touch.clientY);
+    const angleDiff = currentAngle - startAngle;
+    setRotation(prevRotation => prevRotation + angleDiff);
+    setStartAngle(currentAngle);
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+  };
+
+  const calculateAngle = (x, y) => {
+    const rect = platterRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    return Math.atan2(y - centerY, x - centerX);
+  };
+
   return (
     <div className={`turntable deck-${deckIndex + 1}`}>
       <div className="deck-info">
@@ -263,6 +291,9 @@ function Turntable({ track, deckIndex, availableTracks = [], onTrackChange, disc
                 '--disc-image': `url(${discImages[discImage]})` // CSS変数を使用
               }}
               onMouseDown={handleMouseDown}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
             >
               {track && (
                 <audio 
