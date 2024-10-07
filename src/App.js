@@ -39,6 +39,15 @@ function App() {
     });
   };
 
+  useEffect(() => {
+    const preventDefault = (e) => e.preventDefault();
+    document.body.addEventListener('touchmove', preventDefault, { passive: false });
+    
+    return () => {
+      document.body.removeEventListener('touchmove', preventDefault);
+    };
+  }, []);
+
   return (
     <div className="App">
       <HamburgerMenu onImageChange={handleImageChange} />

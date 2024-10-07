@@ -233,6 +233,26 @@ function Turntable({ track, deckIndex, availableTracks = [], onTrackChange, disc
     };
   }, [isDragging]);
 
+  const handleTouchStart = (e) => {
+    const touch = e.touches[0];
+    setIsDragging(true);
+    setStartAngle(calculateAngle(touch.clientX, touch.clientY));
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const touch = e.touches[0];
+    const currentAngle = calculateAngle(touch.clientX, touch.clientY);
+    const angleDiff = currentAngle - startAngle;
+    setRotation(prevRotation => prevRotation + angleDiff);
+    setStartAngle(currentAngle);
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+  };
+
   return (
     <div className={`turntable deck-${deckIndex + 1}`}>
       <div className="deck-info">
@@ -263,6 +283,9 @@ function Turntable({ track, deckIndex, availableTracks = [], onTrackChange, disc
                 '--disc-image': `url(${discImages[discImage]})` // CSS変数を使用
               }}
               onMouseDown={handleMouseDown}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
             >
               {track && (
                 <audio 
