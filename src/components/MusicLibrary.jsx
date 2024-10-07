@@ -26,7 +26,7 @@ function MusicLibrary({ onTrackAdd }) {
         <input
           ref={fileInputRef}
           type="file"
-          accept="audio/*"
+          accept=".mp3,.m4a,.mp4,audio/*"
           multiple
           onChange={handleFileSelect}
           style={{ display: 'none' }}
