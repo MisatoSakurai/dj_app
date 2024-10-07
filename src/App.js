@@ -1,23 +1,68 @@
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
+import Turntable from './components/Turntable';
+import MusicLibrary from './components/MusicLibrary.jsx';
+import HamburgerMenu from './components/HamburgerMenu';
 import './App.css';
 
 function App() {
+  const [selectedTracks, setSelectedTracks] = useState([null, null]);
+  const [availableTracks, setAvailableTracks] = useState([]);
+  const [discImages, setDiscImages] = useState(['disc_cover_1.jpg', 'disc_cover_1.jpg']);
+
+
+  const handleTrackAdd = (newTracks) => {
+    setAvailableTracks(prevTracks => {
+      const updatedTracks = [...prevTracks];
+      newTracks.forEach(newTrack => {
+        const existingIndex = updatedTracks.findIndex(track => track.title === newTrack.title);
+        if (existingIndex === -1) {
+          updatedTracks.push(newTrack);
+        } else {
+          updatedTracks[existingIndex] = newTrack;
+        }
+      });
+      return updatedTracks;
+    });
+  };
+
+  const handleTrackChange = (track, deckIndex) => {
+    const newSelectedTracks = [...selectedTracks];
+    newSelectedTracks[deckIndex] = track;
+    setSelectedTracks(newSelectedTracks);
+  };
+
+  const handleImageChange = (deckIndex, imageName) => {
+    setDiscImages(prevImages => {
+      const newImages = [...prevImages];
+      newImages[deckIndex] = imageName;
+      return newImages;
+    });
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <HamburgerMenu onImageChange={handleImageChange} />
+      <div className="turntables-container">
+        <Turntable 
+          key={`turntable-0-${discImages[0]}`}
+          track={selectedTracks[0]} 
+          deckIndex={0} 
+          availableTracks={availableTracks}
+          onTrackChange={handleTrackChange}
+          discImage={discImages[0]}
+        />
+        <Turntable 
+          key={`turntable-1-${discImages[1]}`}
+          track={selectedTracks[1]} 
+          deckIndex={1}
+          availableTracks={availableTracks}
+          onTrackChange={handleTrackChange}
+          discImage={discImages[1]}
+        />
+      </div>
+      <div className="music-library-container">
+        <MusicLibrary onTrackAdd={handleTrackAdd} />
+      </div>
     </div>
   );
 }

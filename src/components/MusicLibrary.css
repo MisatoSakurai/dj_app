@@ -1,0 +1,74 @@
+.music-library {
+  display: flex;
+  height: 10vh;
+  color: #fff;
+}
+
+.music-library-content {
+    flex: 1;
+    display: flex;
+    flex-direction: row;  /* 列から行に変更 */
+    justify-content: center;
+    align-items: center;  /* 垂直方向の中央揃えを追加 */
+}
+  
+
+.music-library h2 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.music-library-list {
+  flex: 1;
+  overflow-y: auto;
+  margin-left: 20px;
+}
+
+.music-library ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.music-library li {
+  margin-bottom: 5px;
+  font-family: 'KokuGL', sans-serif;
+}
+
+.music-library input[type="file"] {
+  margin-top: 10px;
+}
+
+.file-select-button, .reset-music-button {
+  color: white;
+  padding: auto;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: min(5vh, 20px);
+  transition: background-color 0.3s ease;
+  margin: 0;
+  font-family: 'KokuGL', sans-serif;
+}
+
+.file-select-button {
+    background-color: #8B0000; /* シックな赤色 */
+    width: 70%;
+}
+.file-select-button:hover {
+  background-color: #A52A2A; /* ホバー時の色 */
+}
+
+.file-select-button:active {
+  background-color: #800000; /* クリック時の色 */
+}
+
+.reset-music-button {
+    background-color: #3a0000;
+    width: 25%;
+    margin-left: 5%;
+}
+
+.reset-music-button:hover {
+  background-color: #d32f2f;
+}

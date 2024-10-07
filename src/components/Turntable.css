@@ -1,0 +1,392 @@
+:root {
+  --platter-size: min(calc(50vw - 100px), 70vh);
+  --label-size: min(calc(calc(50vw - 100px)/3), calc(70vh / 3));
+  --play-button-size: min(calc(var(--platter-size) / 6), 50px);
+}
+
+
+
+.turntable {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  width: 45%;
+  height: 100%;
+  font-family: 'KokuGL', sans-serif;
+}
+
+.main-controls {
+  position: relative;
+  display: flex;
+  align-items: end;
+  justify-content: right;
+  width: calc(var(--platter-size) + 80px);
+  height: var(--platter-size);
+  margin: 0;
+}
+
+.deck-2 .main-controls {
+  flex-direction: row-reverse;
+  justify-content: left;
+}
+
+.deck-2 .play-pause-button {
+  left: auto;
+  right: 0;
+}
+
+.deck-2 .volume-control {
+  right: auto;
+  left: 10px;
+}
+
+.deck-2 .playback-rate-control {
+  right: auto;
+  left: 0;
+}
+
+.play-pause-button {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: var(--play-button-size);
+  height: var(--play-button-size);
+  margin: 0;
+  padding: 5px;
+  background-color: #444;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.time-display {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: fit-content;
+    margin-top: 10px;
+    font-size: 0.8em;
+    color: #888;
+}
+
+.deck-2 .time-display {
+  left: auto;
+  right: 0;
+}
+
+
+.deck-1 {
+  float: left;
+}
+
+.deck-2 {
+  float: right;
+}
+
+.deck-info {
+  text-align: center;
+  margin-bottom: 2vh;
+}
+
+.deck-1 .deck-info{
+    padding-right: 80px;
+}
+
+.deck-2 .deck-info{
+    padding-left: 80px;
+}
+
+
+.turntable-container {
+    flex: 0 0 auto;
+    width: var(--platter-size);
+    height: var(--platter-size);
+}
+
+.deck-2 .turntable-container {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.deck-1 .turntable-container {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.turntable-platter {
+    width: var(--platter-size);
+    height: var(--platter-size);
+    border-radius: 50%;
+    background: repeating-radial-gradient(
+      circle at center,
+      #222 0,
+      #222 2px,
+      #111 2px,
+      #111 4px
+    );
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    cursor: grab;
+    transition: transform 0.1s ease;
+  }
+  
+.turntable-platter::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--label-size);
+  height: var(--label-size);
+  background-color: #444;
+  background-image: 
+    radial-gradient(
+      circle at center,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0.2) 5%,
+      rgba(0, 0, 0, 0.1) 5%,
+      rgba(0, 0, 0, 0.1) 100%
+    ),
+    var(--disc-image);
+  background-size: cover, cover;
+  background-position: center;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.turntable-platter::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: calc(var(--platter-size) / 15);
+    height: calc(var(--platter-size) / 15);
+    background: 
+        radial-gradient(
+            circle at center,
+            #888 0%,
+            #888 40%,
+            #666 40%,
+            #666 100%
+        );
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.turntable-platter-base {
+    width: calc(var(--platter-size) * 0.9);
+    height: calc(var(--platter-size) * 0.9);
+    position: absolute;
+    top: calc(var(--platter-size) * 0.05);
+    left: calc(var(--platter-size) * 0.05);
+    border-radius: 50%;
+    background-color: #333;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.deck-2 .turntable-platter-base {
+    right: calc(var(--platter-size) * 0.05);
+    left: auto;
+}
+
+.deck-1 .turntable-platter-base {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+
+.progress-bar-container {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%) rotate(-135deg);
+  width: var(--platter-size);
+  height: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.deck-2 .progress-bar-container {
+  left: auto;
+  right: 0;
+}
+
+.progress-bar {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: calc((var(--platter-size) - var(--label-size)) / 2);
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  outline: none;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  pointer-events: auto;
+}
+
+.progress-bar:hover {
+  opacity: 1;
+}
+
+.progress-bar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;  /* サイズを小さく */
+  height: 12px; /* サイズを小さく */
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+}
+
+.progress-bar::-moz-range-thumb {
+  width: 12px;  /* サイズを小さく */
+  height: 12px; /* サイズを小さく */
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+}
+
+.progress-bar::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4px;
+  /* background: linear-gradient(to right, #fff, transparent); */
+  background: none;
+  z-index: 20;
+  /* cursor: pointer; */
+}
+
+.progress-bar::-moz-range-track {
+  width: 100%;
+  height: 4px;
+  /* cursor: pointer; */
+  /* background: linear-gradient(to right, #fff, transparent); */
+  background: none;
+  border-radius: 5px;
+}
+
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  width: 100%;
+}
+
+
+.sliders-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.slider-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 45%;
+}
+
+.slider-container label {
+  margin-bottom: 5px;
+}
+
+button {
+  margin: 10px 0;
+  padding: 5px 10px;
+  background-color: #444;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #555;
+}
+
+span {
+  margin-top: 5px;
+}
+
+.track-selector {
+  background-color: #333333; /* 濃い灰色の背景 */
+  color: #ffffff; /* 白い文字色 */
+  border: 1px solid #555555; /* より明るい灰色のボーダー */
+  padding: 5px 10px; /* 内部の余白 */
+  border-radius: 4px; /* 角を少し丸く */
+  font-size: 14px; /* フォントサイズ */
+  width: 100%; /* 幅を親要素に合わせる */
+  max-width: 300px; /* 最大幅を設定 */
+  font-family: 'KokuGL', sans-serif;
+}
+
+/* オプションの背景色も変更 */
+.track-selector option {
+  background-color: #333333;
+  color: #ffffff;
+}
+
+/* フォーカス時のスタイル */
+.track-selector:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+/* ホバー時のスタイル */
+.track-selector:hover {
+  background-color: #444444;
+}
+
+.control-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40px;
+  /* height: calc(var(--platter-size) * 0.25 ); */
+}
+
+.control-bar input {
+    position: absolute;
+    bottom: 30%;
+    width: calc(var(--platter-size) * 0.5 );
+    transform: rotate(-90deg);
+}
+
+
+
+.picker input[type="range"] {
+    -webkit-appearance: none;
+    width: calc(var(--platter-size) * 0.5 );
+    height: 5px;
+    background: #888;
+    outline: none;
+    transform: rotate(-90deg);
+    margin-bottom: 20px;
+}
+
+.picker input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #555;
+    cursor: pointer;
+}
+
+.picker input[type="range"]::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    background: #555;
+    cursor: pointer;
+    border: none;
+}

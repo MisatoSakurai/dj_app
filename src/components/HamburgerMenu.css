@@ -1,0 +1,119 @@
+.hamburger-menu {
+  position: fixed;
+  top: 20px;
+  left: 20px; /* 右から左に変更 */
+  z-index: 1000;
+  font-family: 'KokuGL', sans-serif;
+  color: white;
+}
+
+.hamburger-button, .hamburger-button:hover{
+  display: flex;
+  position: fixed;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 6vh;
+  height: 6vh;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1002;
+  bottom: 2vh;
+}
+
+.hamburger-button span {
+  width: 6vh;
+  height: 0.25rem;
+  background: #000;
+  border-radius: 10px;
+  transition: all 0.3s linear;
+  position: relative;
+  transform-origin: 1px;
+}
+
+.hamburger-button.open span:nth-child(1) {
+  transform: rotate(45deg);
+}
+
+.hamburger-button.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-button.open span:nth-child(3) {
+  transform: rotate(-45deg);
+}
+
+.menu-container {
+  position: fixed;
+  top: 0;
+  left: -300px; /* 右から左に変更 */
+  width: 0;
+  height: 100%;
+  transition: left 0.3s ease-in-out; /* right から left に変更 */
+  z-index: 1001;
+}
+
+.menu-container.open {
+  left: 0; /* right から left に変更 */
+}
+
+.menu-overlay {
+  position: fixed;
+  display: none;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  z-index: 1;
+}
+
+.open .menu-overlay {
+  display: block;
+  opacity: 1;
+}
+
+.menu-items {
+  position: absolute;
+  top: 0;
+  left: 0; /* right から left に変更 */
+  width: 300px;
+  height: 90vh;
+  background: rgb(78, 78, 78);
+  padding: 0 2rem;
+  padding-bottom: 10vh;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1); /* 影の方向を変更 */
+  z-index: 2;
+  transform: translateX(-100%); /* 100% から -100% に変更 */
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.menu-container.open .menu-items {
+  transform: translateX(0);
+}
+
+.menu-items ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.menu-items li {
+  padding: 0.5rem 0;
+  font-size: 1.2rem; /* フォントサイズを大きめに設定 */
+}
+
+.menu-items select {
+  font-size: 1.2rem; /* フォントサイズを大きめに設定 */
+  font-family: 'KokuGL', sans-serif;
+  color: white;
+  background-color: rgb(78, 78, 78);
+  border: none;
+  cursor: pointer;
+}
+
